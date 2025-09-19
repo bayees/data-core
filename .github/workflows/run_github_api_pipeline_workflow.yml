@@ -1,7 +1,7 @@
 name: Daily Data Core
 'on':
   schedule:
-  - cron: '*/30 * * * *'
+  - cron: '0 5 * * *'
   workflow_dispatch: null
 env:
   DESTINATION__FILESYSTEM__BUCKET_URL: s3://prod/base/
