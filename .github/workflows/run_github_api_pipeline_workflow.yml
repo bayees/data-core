@@ -20,7 +20,7 @@ jobs:
   run_pipeline:
     needs: maybe_skip
     if: needs.maybe_skip.outputs.should_skip != 'true'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
       uses: actions/checkout@v3
