@@ -40,7 +40,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run python github_api_pipeline.py
+        uv run sources/github_api_pipeline.py
   run_home_assistant_pipeline:
     needs: maybe_skip
     if: needs.maybe_skip.outputs.should_skip != 'true'
@@ -64,4 +64,4 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run python home_assistant.py
+        uv run sources/home_assistant.py
