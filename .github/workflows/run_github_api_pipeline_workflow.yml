@@ -1,4 +1,4 @@
-name: Run github_api_pipeline pipeline from github_api_pipeline.py
+name: Daily Data Core
 'on':
   schedule:
   - cron: '*/30 * * * *'
@@ -17,7 +17,7 @@ jobs:
         concurrent_skipping: always
         skip_after_successful_duplicate: 'false'
         do_not_skip: '[]'
-  run_pipeline:
+  run_github_api_pipeline:
     needs: maybe_skip
     if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
@@ -41,3 +41,27 @@ jobs:
       run: |
         cd dlt_project
         uv run python github_api_pipeline.py
+  run_home_assistant_pipeline:
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        cache-dependency-glob: "dlt_project/uv.lock"
+    - name: Setup Python with uv
+      run: |
+        cd dlt_project
+        uv python install 3.12
+    - name: Install dependencies
+      run: |
+        cd dlt_project
+        uv sync --frozen
+    - name: Run pipeline script
+      run: |
+        cd dlt_project
+        uv run python home_assistant.py
