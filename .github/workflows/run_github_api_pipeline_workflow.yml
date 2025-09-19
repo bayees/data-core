@@ -43,21 +43,8 @@ jobs:
     if: needs.maybe_skip_github_api_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
-    - name: Check out
-      uses: actions/checkout@v3
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        enable-cache: true
-        cache-dependency-glob: "dlt_project/uv.lock"
-    - name: Setup Python with uv
-      run: |
-        cd dlt_project
-        uv python install 3.12
-    - name: Install dependencies
-      run: |
-        cd dlt_project
-        uv sync --frozen
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
     - name: Run pipeline script
       run: |
         cd dlt_project
@@ -80,21 +67,8 @@ jobs:
     if: needs.maybe_skip_home_assistant_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
-    - name: Check out
-      uses: actions/checkout@v3
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        enable-cache: true
-        cache-dependency-glob: "dlt_project/uv.lock"
-    - name: Setup Python with uv
-      run: |
-        cd dlt_project
-        uv python install 3.12
-    - name: Install dependencies
-      run: |
-        cd dlt_project
-        uv sync --frozen
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
     - name: Run pipeline script
       run: |
         cd dlt_project
@@ -117,21 +91,8 @@ jobs:
     if: needs.maybe_skip_spiir_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
-    - name: Check out
-      uses: actions/checkout@v3
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        enable-cache: true
-        cache-dependency-glob: "dlt_project/uv.lock"
-    - name: Setup Python with uv
-      run: |
-        cd dlt_project
-        uv python install 3.12
-    - name: Install dependencies
-      run: |
-        cd dlt_project
-        uv sync --frozen
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
     - name: Run pipeline script
       run: |
         cd dlt_project
