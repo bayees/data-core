@@ -43,6 +43,8 @@ jobs:
     if: needs.maybe_skip_github_api_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
+    - name: Check out
+      uses: actions/checkout@v3
     - name: Setup DLT Project
       uses: ./.github/actions/setup-dlt-project
     - name: Run pipeline script
@@ -67,6 +69,8 @@ jobs:
     if: needs.maybe_skip_home_assistant_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
+    - name: Check out
+      uses: actions/checkout@v3
     - name: Setup DLT Project
       uses: ./.github/actions/setup-dlt-project
     - name: Run pipeline script
@@ -91,6 +95,8 @@ jobs:
     if: needs.maybe_skip_spiir_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
+    - name: Check out
+      uses: actions/checkout@v3
     - name: Setup DLT Project
       uses: ./.github/actions/setup-dlt-project
     - name: Run pipeline script

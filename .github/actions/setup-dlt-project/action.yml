@@ -1,12 +1,9 @@
 name: 'Setup DLT Project'
-description: 'Checkout code, setup Python environment and install dependencies for DLT project'
+description: 'Setup Python environment and install dependencies for DLT project'
 
 runs:
   using: 'composite'
   steps:
-    - name: Check out
-      uses: actions/checkout@v3
-
     - name: Setup uv
       uses: astral-sh/setup-uv@v6
       with:

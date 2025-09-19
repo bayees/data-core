@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:dlthub.com)"
+      "WebFetch(domain:dlthub.com)",
+      "Read(//Users/cb/projects/data-core/**)",
+      "Bash(git ls-tree:*)"
     ],
     "deny": [],
     "ask": []
