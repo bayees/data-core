@@ -116,7 +116,7 @@ def run_source() -> None:
     # configure the pipeline with your destination details
     pipeline = dlt.pipeline(
         pipeline_name="home_assistant_pipeline",
-        destination='duckdb',
+        destination='filesystem',
         dataset_name="home_assistant_data"
     )
 
