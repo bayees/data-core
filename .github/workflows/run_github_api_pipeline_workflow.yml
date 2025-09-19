@@ -20,7 +20,8 @@ env:
   SOURCES__HOME_ASSISTANT_SOURCE__HOME_ASSISTANT_TOKEN: ${{ secrets.HOME_ASSISTANT_TOKEN }}
 
 jobs:
-  maybe_skip:
+  
+  maybe_skip_github_api_pipeline:
     runs-on: [self-hosted, linux, docker]
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
@@ -31,9 +32,10 @@ jobs:
         concurrent_skipping: always
         skip_after_successful_duplicate: 'false'
         do_not_skip: '[]'
+
   run_github_api_pipeline:
-    needs: maybe_skip
-    if: needs.maybe_skip.outputs.should_skip != 'true'
+    needs: maybe_skip_github_api_pipeline
+    if: needs.maybe_skip_github_api_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -55,9 +57,22 @@ jobs:
       run: |
         cd dlt_project
         uv run sources/github_api_pipeline.py
+
+  maybe_skip_home_assistant_pipeline:
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
   run_home_assistant_pipeline:
-    needs: maybe_skip
-    if: needs.maybe_skip.outputs.should_skip != 'true'
+    needs: maybe_skip_home_assistant_pipeline
+    if: needs.maybe_skip_home_assistant_pipeline.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
