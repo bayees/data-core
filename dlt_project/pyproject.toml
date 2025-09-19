@@ -5,5 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "dlt[cli,duckdb,s3]>=1.16.0",
+    "dlt[cli,deltalake,duckdb,parquet,s3]>=1.16.0",
+    "lxml>=6.0.1",
 ]

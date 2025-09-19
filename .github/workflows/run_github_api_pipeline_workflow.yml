@@ -19,8 +19,13 @@ env:
   SOURCES__HOME_ASSISTANT_PORT: ${{ secrets.HOME_ASSISTANT_PORT }}
   SOURCES__HOME_ASSISTANT_TOKEN: ${{ secrets.HOME_ASSISTANT_TOKEN }}
 
+  # SPIIR source configuration
+  SOURCES__SPIIR_BASE_URL: ${{ secrets.SPIIR_BASE_URL }}
+  SOURCES__SPIIR_EMAIL: ${{ secrets.SPIIR_EMAIL }}
+  SOURCES__SPIIR_PASSWORD: ${{ secrets.SPIIR_PASSWORD }}
+
 jobs:
-  
+
   maybe_skip_github_api_pipeline:
     runs-on: [self-hosted, linux, docker]
     outputs:
@@ -94,3 +99,40 @@ jobs:
       run: |
         cd dlt_project
         uv run sources/home_assistant.py
+
+  maybe_skip_spiir_pipeline:
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
+  run_spiir_pipeline:
+    needs: maybe_skip_spiir_pipeline
+    if: needs.maybe_skip_spiir_pipeline.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        cache-dependency-glob: "dlt_project/uv.lock"
+    - name: Setup Python with uv
+      run: |
+        cd dlt_project
+        uv python install 3.12
+    - name: Install dependencies
+      run: |
+        cd dlt_project
+        uv sync --frozen
+    - name: Run pipeline script
+      run: |
+        cd dlt_project
+        uv run sources/spiir.py
