@@ -5,6 +5,9 @@ name: Daily Data Core
   workflow_dispatch: null
 env:
   ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  HOME_ASSISTANT_HOST: ${{ secrets.HOME_ASSISTANT_HOST }}
+  HOME_ASSISTANT_PORT: ${{ secrets.HOME_ASSISTANT_PORT }}
+  HOME_ASSISTANT_TOKEN: ${{ secrets.HOME_ASSISTANT_TOKEN }}
 jobs:
   maybe_skip:
     runs-on: [self-hosted, linux, docker]
