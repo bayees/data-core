@@ -224,3 +224,4 @@ dbt_project/dbt_packages/dbt_utils/macros/sql/width_bucket.sql
 dbt_project/dbt_packages/dbt_utils/macros/web/get_url_host.sql
 dbt_project/dbt_packages/dbt_utils/macros/web/get_url_parameter.sql
 dbt_project/dbt_packages/dbt_utils/macros/web/get_url_path.sql
+dbt_project/.user.yml
