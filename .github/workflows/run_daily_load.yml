@@ -26,6 +26,16 @@ env:
   SOURCES__TODOIST_URL: ${{ secrets.TODOIST_URL }}
   SOURCES__TODOIST_TOKEN: ${{ secrets.TODOIST_TOKEN }}
 
+  # Dawa source configuration
+  SOURCES__DAWA_DAWA_BASE_URL: https://api.dataforsyningen.dk
+  SOURCES__DAWA_DUCKDB_ENDPOINT: ${{ secrets.DUCKDB_ENDPOINT }}
+  SOURCES__DAWA_DUCKDB_KEY_ID: ${{ secrets.DUCKDB_KEY_ID }}
+  SOURCES__DAWA_DUCKDB_SECRET: ${{ secrets.DUCKDB_SECRET }}
+  SOURCES__DAWA_DUCKDB_REGION: eu-west-1
+  SOURCES__DAWA_DUCKDB_USE_SSL: false
+  SOURCES__DAWA_DUCKDB_URL_STYLE: path
+
+
 jobs:
 
   maybe_skip_home_assistant_pipeline:
@@ -105,3 +115,25 @@ jobs:
       run: |
         cd dlt_project
         uv run sources/todoist.py
+
+  maybe_skip_dawa_pipeline:
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
+  run_dawa_pipeline:
+    needs: maybe_skip_dawa_pipeline
+    if: needs.maybe_skip_dawa_pipeline.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
