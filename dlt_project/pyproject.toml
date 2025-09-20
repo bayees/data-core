@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "calendra>=7.11.1",
     "dlt[cli,deltalake,duckdb,parquet,s3]>=1.16.0",
     "lxml>=6.0.1",
 ]
