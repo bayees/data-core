@@ -5,6 +5,10 @@ name: Daily Data Core
   workflow_dispatch:
 
 env:
+  # Environment configuration
+  ENVIRONMENT: prod
+
+  # Destination configuration
   DESTINATION__FILESYSTEM__BUCKET_URL: s3://prod/base/
   DESTINATION__FILESYSTEM__CREDENTIALS__ENDPOINT_URL: ${{secrets.FILESYSTEM_ENDPOINT_URL }}
   DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID: ${{secrets.FILESYSTEM_AWS_ACCESS_KEY_ID }}

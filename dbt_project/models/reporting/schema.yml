@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: lego_collection
+    config:
+      meta:
+        dagster:
+          group: reporting__lego
+  - name: lego_minifigs
+    config:
+      meta:
+        dagster:
+          group: reporting__lego
+  - name: location
+    config:
+      meta:
+        dagster:
+          group: reporting__location_tracking

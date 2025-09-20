@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  # economy
+  - name: evidence__actuals
+    config:
+        meta:
+            dagster:
+                group: reporting__economy
+
+  - name: evidence__budget
+    config:
+        meta:
+            dagster:
+                group: reporting__economy
+
+  # lego         
+  - name: evidence__lego_collection
+    config:
+        meta:
+            dagster:
+                group: reporting__lego
+  - name: evidence__lego_minifigs
+    config:
+        meta:
+            dagster:
+                group: reporting__lego
+
+  # location tracking
+  - name: evidence__positions
+    config:
+        meta:
+            dagster:
+                group: reporting__location_tracking
+                
+                
+                
+                
+

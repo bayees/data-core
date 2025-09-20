@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  # economy
+  - name: dim_category
+    config:
+      meta:
+        dagster:
+          group: curated__economy
+  - name: fct_budget
+    config:
+      meta:
+        dagster:
+          group: curated__economy
+  - name: fct_postings
+    config:
+      meta:
+        dagster:
+          group: curated__economy
+  # lego
+  - name: dim_lego_minifig
+    config:
+      meta:
+        dagster:
+          group: curated__lego
+  - name: dim_lego_part
+    config:
+      meta:
+        dagster:
+          group: curated__lego
+  - name: dim_lego_set
+    config:
+      meta:
+        dagster:
+          group: curated__lego
+  - name: fct_lego_minifig_inventory
+    config:
+      meta:
+        dagster:
+          group: curated__lego
+  - name: fct_lego_parts
+    config:
+      meta:
+        dagster:
+          group: curated__lego
+  
+  # location tracking
+  - name: dim_location
+    config:
+      meta:
+        dagster:
+          group: curated__location_tracking
+  - name: fct_positions
+    config:
+      meta:
+        dagster:
+          group: curated__location_tracking
+
+  # shared
+  - name: dim_calendar
+    columns:
+      - name: calendar_id
+        description: The calendar id
+        tests:
+          - unique
+    config:
+      meta:
+        dagster:
+          group: curated__shared
+  - name: dim_time
+    config:
+      meta:
+        dagster:
+          group: curated__shared
+          
+          

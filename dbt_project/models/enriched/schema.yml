@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: enriched_number_series
+    config:
+      meta:
+        dagster:
+          group: enriched__shared

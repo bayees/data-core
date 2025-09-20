@@ -1,0 +1,21 @@
+dbt_project:
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/duckdb.db
+      threads: 1
+      extensions:
+        - httpfs
+        - parquet
+        - delta
+        - spatial
+      secrets:
+        - type: s3
+          scope: "s3://prod"
+          key_id: "h0mhmv6ReaxurjSQ"
+          secret: "e6Rve77NdZUZX3o2K59pqUkcffnK98ff"
+          endpoint: "192.168.0.86:9768"
+          region: "eu-west-1"
+          use_ssl: false
+          url_style: "path"
+  target: dev
