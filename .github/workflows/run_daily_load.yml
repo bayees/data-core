@@ -35,6 +35,20 @@ env:
   SOURCES__DAWA_DUCKDB_USE_SSL: false
   SOURCES__DAWA_DUCKDB_URL_STYLE: path
 
+  # Grist source configuration
+  SOURCES__GRIST_BASE_URL: ${{ secrets.GRIST_BASE_URL }}
+  SOURCES__GRIST_API_TOKEN: ${{ secrets.GRIST_API_TOKEN }}
+
+  # Rebrickable source configuration
+  SOURCES__REBRICKABLE_BASE_URL: ${{ secrets.REBRICKABLE_BASE_URL }}
+  SOURCES__REBRICKABLE_API_KEY: ${{ secrets.REBRICKABLE_API_KEY }}
+  SOURCES__REBRICKABLE_DUCKDB_ENDPOINT: ${{ secrets.DUCKDB_ENDPOINT }}
+  SOURCES__REBRICKABLE_DUCKDB_KEY_ID: ${{ secrets.DUCKDB_KEY_ID }}
+  SOURCES__REBRICKABLE_DUCKDB_SECRET: ${{ secrets.DUCKDB_SECRET }}
+  SOURCES__REBRICKABLE_DUCKDB_REGION: eu-west-1
+  SOURCES__REBRICKABLE_DUCKDB_USE_SSL: false
+  SOURCES__REBRICKABLE_DUCKDB_URL_STYLE: path
+
 
 jobs:
 
@@ -137,3 +151,55 @@ jobs:
       uses: actions/checkout@v3
     - name: Setup DLT Project
       uses: ./.github/actions/setup-dlt-project
+
+  maybe_skip_grist_pipeline:
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
+  run_grist_pipeline:
+    needs: maybe_skip_grist_pipeline
+    if: needs.maybe_skip_grist_pipeline.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
+    - name: Run pipeline script
+      run: |
+        cd dlt_project
+        uv run sources/grist.py
+
+  maybe_skip_rebrickable_pipeline:
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
+  run_rebrickable_pipeline:
+    needs: maybe_skip_rebrickable_pipeline
+    if: needs.maybe_skip_rebrickable_pipeline.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
+    - name: Run pipeline script
+      run: |
+        cd dlt_project
+        uv run sources/rebrickable.py
