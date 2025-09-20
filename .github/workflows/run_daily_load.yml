@@ -53,6 +53,14 @@ env:
   SOURCES__REBRICKABLE_DUCKDB_USE_SSL: false
   SOURCES__REBRICKABLE_DUCKDB_URL_STYLE: path
 
+  # DBT DuckDB configuration
+  DBT_DUCKDB_S3_KEY_ID: ${{ secrets.DUCKDB_KEY_ID }}
+  DBT_DUCKDB_S3_SECRET: ${{ secrets.DUCKDB_SECRET }}
+  DBT_DUCKDB_S3_ENDPOINT: ${{ secrets.DUCKDB_ENDPOINT }}
+  DBT_DUCKDB_S3_REGION: eu-west-1
+  DBT_DUCKDB_S3_USE_SSL: false
+  DBT_DUCKDB_S3_URL_STYLE: path
+
 
 jobs:
 
@@ -237,3 +245,60 @@ jobs:
       run: |
         cd dlt_project
         uv run sources/calendar_source.py
+
+  maybe_skip_dbt_run:
+    needs: [run_home_assistant_pipeline, run_spiir_pipeline, run_todoist_pipeline, run_dawa_pipeline, run_grist_pipeline, run_rebrickable_pipeline, run_calendar_pipeline]
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
+  run_dbt_transformations:
+    needs: maybe_skip_dbt_run
+    if: needs.maybe_skip_dbt_run.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup DBT Project
+      uses: ./.github/actions/setup-dbt-project
+    - name: Create profiles.yml from environment
+      run: |
+        cd dbt_project
+        cat > profiles.yml << EOF
+        dbt_project:
+          outputs:
+            prod:
+              type: duckdb
+              path: /tmp/duckdb.db
+              threads: 4
+              extensions:
+                - httpfs
+                - parquet
+                - delta
+                - spatial
+              secrets:
+                - type: s3
+                  scope: "s3://prod"
+                  key_id: "${DBT_DUCKDB_S3_KEY_ID}"
+                  secret: "${DBT_DUCKDB_S3_SECRET}"
+                  endpoint: "${DBT_DUCKDB_S3_ENDPOINT}"
+                  region: "${DBT_DUCKDB_S3_REGION}"
+                  use_ssl: ${DBT_DUCKDB_S3_USE_SSL}
+                  url_style: "${DBT_DUCKDB_S3_URL_STYLE}"
+          target: prod
+        EOF
+    - name: Run DBT deps
+      run: |
+        cd dbt_project
+        uv run dbt deps
+    - name: Run DBT transformations
+      run: |
+        cd dbt_project
+        uv run dbt run --target prod

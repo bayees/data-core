@@ -1,0 +1,23 @@
+name: 'Setup DBT Project'
+description: 'Setup Python environment and install dependencies for DBT project'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        cache-dependency-glob: "dbt_project/uv.lock"
+
+    - name: Setup Python with uv
+      shell: bash
+      run: |
+        cd dbt_project
+        uv python install 3.12
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        cd dbt_project
+        uv sync --frozen
