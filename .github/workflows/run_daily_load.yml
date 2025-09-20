@@ -64,7 +64,7 @@ env:
 
 jobs:
 
-  maybe_skip_home_assistant_pipeline:
+  maybe_skip:
     runs-on: [self-hosted, linux, docker]
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
@@ -77,8 +77,8 @@ jobs:
         do_not_skip: '[]'
 
   run_home_assistant_pipeline:
-    needs: maybe_skip_home_assistant_pipeline
-    if: needs.maybe_skip_home_assistant_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -90,21 +90,9 @@ jobs:
         cd dlt_project
         uv run sources/home_assistant_source.py
 
-  maybe_skip_spiir_pipeline:
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
-
   run_spiir_pipeline:
-    needs: maybe_skip_spiir_pipeline
-    if: needs.maybe_skip_spiir_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -115,22 +103,10 @@ jobs:
       run: |
         cd dlt_project
         uv run sources/spiir_source.py
-  
-  maybe_skip_todoist_pipeline:
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
 
   run_todoist_pipeline:
-    needs: maybe_skip_todoist_pipeline
-    if: needs.maybe_skip_todoist_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -142,21 +118,9 @@ jobs:
         cd dlt_project
         uv run sources/todoist_source.py
 
-  maybe_skip_dawa_pipeline:
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
-
   run_dawa_pipeline:
-    needs: maybe_skip_dawa_pipeline
-    if: needs.maybe_skip_dawa_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -168,21 +132,9 @@ jobs:
         cd dlt_project
         uv run sources/dawa_source.py
 
-  maybe_skip_grist_pipeline:
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
-
   run_grist_pipeline:
-    needs: maybe_skip_grist_pipeline
-    if: needs.maybe_skip_grist_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -194,21 +146,9 @@ jobs:
         cd dlt_project
         uv run sources/grist_source.py
 
-  maybe_skip_rebrickable_pipeline:
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
-
   run_rebrickable_pipeline:
-    needs: maybe_skip_rebrickable_pipeline
-    if: needs.maybe_skip_rebrickable_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -220,21 +160,9 @@ jobs:
         cd dlt_project
         uv run sources/rebrickable_source.py
 
-  maybe_skip_calendar_pipeline:
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
-
   run_calendar_pipeline:
-    needs: maybe_skip_calendar_pipeline
-    if: needs.maybe_skip_calendar_pipeline.outputs.should_skip != 'true'
+    needs: maybe_skip
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
@@ -246,22 +174,9 @@ jobs:
         cd dlt_project
         uv run sources/calendar_source.py
 
-  maybe_skip_dbt_run:
-    needs: [run_home_assistant_pipeline, run_spiir_pipeline, run_todoist_pipeline, run_dawa_pipeline, run_grist_pipeline, run_rebrickable_pipeline, run_calendar_pipeline]
-    runs-on: [self-hosted, linux, docker]
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-    - id: skip_check
-      uses: fkirc/skip-duplicate-actions@v5
-      with:
-        concurrent_skipping: always
-        skip_after_successful_duplicate: 'false'
-        do_not_skip: '[]'
-
   run_dbt_transformations:
-    needs: maybe_skip_dbt_run
-    if: needs.maybe_skip_dbt_run.outputs.should_skip != 'true'
+    needs: [run_home_assistant_pipeline, run_spiir_pipeline, run_todoist_pipeline, run_dawa_pipeline, run_grist_pipeline, run_rebrickable_pipeline, run_calendar_pipeline]
+    if: needs.maybe_skip.outputs.should_skip != 'true'
     runs-on: [self-hosted, linux, docker]
     steps:
     - name: Check out
