@@ -151,6 +151,10 @@ jobs:
       uses: actions/checkout@v3
     - name: Setup DLT Project
       uses: ./.github/actions/setup-dlt-project
+    - name: Run pipeline script
+      run: |
+        cd dlt_project
+        uv run sources/dawa.py
 
   maybe_skip_grist_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -203,3 +207,29 @@ jobs:
       run: |
         cd dlt_project
         uv run sources/rebrickable.py
+
+  maybe_skip_calendar_pipeline:
+    runs-on: [self-hosted, linux, docker]
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+    - id: skip_check
+      uses: fkirc/skip-duplicate-actions@v5
+      with:
+        concurrent_skipping: always
+        skip_after_successful_duplicate: 'false'
+        do_not_skip: '[]'
+
+  run_calendar_pipeline:
+    needs: maybe_skip_calendar_pipeline
+    if: needs.maybe_skip_calendar_pipeline.outputs.should_skip != 'true'
+    runs-on: [self-hosted, linux, docker]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v3
+    - name: Setup DLT Project
+      uses: ./.github/actions/setup-dlt-project
+    - name: Run pipeline script
+      run: |
+        cd dlt_project
+        uv run sources/calendar.py
