@@ -76,7 +76,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/home_assistant.py
+        uv run sources/home_assistant_source.py
 
   maybe_skip_spiir_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -102,7 +102,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/spiir.py
+        uv run sources/spiir_source.py
   
   maybe_skip_todoist_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -128,7 +128,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/todoist.py
+        uv run sources/todoist_source.py
 
   maybe_skip_dawa_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -154,7 +154,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/dawa.py
+        uv run sources/dawa_source.py
 
   maybe_skip_grist_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -180,7 +180,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/grist.py
+        uv run sources/grist_source.py
 
   maybe_skip_rebrickable_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -206,7 +206,7 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/rebrickable.py
+        uv run sources/rebrickable_source.py
 
   maybe_skip_calendar_pipeline:
     runs-on: [self-hosted, linux, docker]
@@ -232,4 +232,4 @@ jobs:
     - name: Run pipeline script
       run: |
         cd dlt_project
-        uv run sources/calendar.py
+        uv run sources/calendar_source.py
