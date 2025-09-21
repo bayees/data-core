@@ -110,7 +110,7 @@ def run_source() -> None:
     pipeline = dlt.pipeline(
         pipeline_name="grist_pipeline",
         destination='filesystem',
-        dataset_name="grist_data"
+        dataset_name="grist"
     )
 
     # run the pipeline with your parameters

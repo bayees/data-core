@@ -70,3 +70,20 @@ def dawa_source(
     }
 
     yield from rest_api_resources(config)
+
+def run_source() -> None:
+    # configure the pipeline with your destination details
+    pipeline = dlt.pipeline(
+        pipeline_name="dawa_pipeline",
+        destination='filesystem',
+        dataset_name="dawa"
+    )
+
+    # run the pipeline with your parameters
+    load_info = pipeline.run(dawa_source())
+
+    # pretty print the information on data that was loaded
+    print(load_info)  # noqa: T201
+
+if __name__ == "__main__":
+    run_source()

@@ -68,7 +68,7 @@ def run_source() -> None:
     pipeline = dlt.pipeline(
         pipeline_name="spiir_pipeline",
         destination='filesystem',
-        dataset_name="spiir_data"
+        dataset_name="spiir"
     )
 
     # run the pipeline with your parameters

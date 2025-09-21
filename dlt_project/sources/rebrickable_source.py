@@ -119,3 +119,14 @@ def rebrickable_source(
     }
 
     yield from rest_api_resources(config)
+
+def run_source() -> None:
+    # configure the pipeline with your destination details
+    pipeline = dlt.pipeline(
+        pipeline_name="rebrickable_pipeline",
+        destination='filesystem',
+        dataset_name="rebrickable"
+    )
+
+    # run the pipeline with your parameters
+    load_info = pipeline.run(rebrickable_source())

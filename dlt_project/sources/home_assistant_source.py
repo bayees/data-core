@@ -117,7 +117,7 @@ def run_source() -> None:
     pipeline = dlt.pipeline(
         pipeline_name="home_assistant_pipeline",
         destination='filesystem',
-        dataset_name="home_assistant_data"
+        dataset_name="home_assistant"
     )
 
     # run the pipeline with your parameters

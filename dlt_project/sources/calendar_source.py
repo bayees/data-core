@@ -64,7 +64,7 @@ def run_source() -> None:
     pipeline = dlt.pipeline(
         pipeline_name="calendar_pipeline",
         destination='filesystem',
-        dataset_name="calendar_data"
+        dataset_name="calendar"
     )
 
     # run the pipeline with your parameters
