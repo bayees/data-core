@@ -114,6 +114,25 @@ def run_source() -> None:
     )
 
     # run the pipeline with your parameters
+    
+    source = grist_source()
+    
+    # Apply hints to the 'statements' resource here
+    source.resources["all"].apply_hints(columns={
+        "jan": {"data_type": "double"},
+        "feb": {"data_type": "double"},
+        "mar": {"data_type": "double"},
+        "apr": {"data_type": "double"},
+        "may": {"data_type": "double"},
+        "jun": {"data_type": "double"},
+        "jul": {"data_type": "double"},
+        "aug": {"data_type": "double"},
+        "sep": {"data_type": "double"},
+        "oct": {"data_type": "double"},
+        "nov": {"data_type": "double"},
+        "dec": {"data_type": "double"},
+    })
+    
     load_info = pipeline.run(grist_source())
 
     # pretty print the information on data that was loaded

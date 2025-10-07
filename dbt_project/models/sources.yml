@@ -22,17 +22,8 @@ sources:
           - name: id
             tests:
               - unique
-        meta:
-          dagster:
-            asset_key: "dlt_grist_source_orgs"
       - name: all
-        meta:
-          dagster:
-            asset_key: "dlt_grist_source_all"
       - name: sets
-        meta:
-          dagster:
-            asset_key: "dlt_grist_source_sets"
   - name: spiir
     meta:
       external_location: "delta_scan('s3://{{ env_var('ENVIRONMENT') }}/base/spiir/{name}')"
@@ -54,9 +45,6 @@ sources:
           - name: date_actual
             tests:
               - unique
-        meta:
-          dagster:
-            asset_key: "dlt_calendar_source_calendar"
   - name: rebrickable
     meta:
       external_location: "delta_scan('s3://{{ env_var('ENVIRONMENT') }}/base/rebrickable/{name}')"
@@ -66,33 +54,21 @@ sources:
           - name: set_num
             tests:
               - unique
-        meta:
-          dagster:
-            asset_key: "dlt_rebrickable_source_lego_sets"
       - name: lego_minifigs
         columns:
           - name: set_num
             #tests:
               #- unique
-        meta:
-          dagster:
-            asset_key: "dlt_rebrickable_source_lego_minifigs"
       - name: lego_parts
         columns:
           - name: inv_part_id
             tests:
               - unique
-        meta:
-          dagster:
-            asset_key: "dlt_rebrickable_source_lego_parts"
       - name: lego_alternates
         columns:
           - name: set_num
             tests:
               - unique
-        meta:
-          dagster:
-            asset_key: "dlt_rebrickable_source_lego_alternates"
   - name: todoist
     meta:
       external_location: "delta_scan('s3://{{ env_var('ENVIRONMENT') }}/base/todoist/{name}')"
