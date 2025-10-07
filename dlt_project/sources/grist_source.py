@@ -119,18 +119,18 @@ def run_source() -> None:
     
     # Apply hints to the 'statements' resource here
     source.resources["all"].apply_hints(columns={
-        "jan": {"data_type": "double"},
-        "feb": {"data_type": "double"},
-        "mar": {"data_type": "double"},
-        "apr": {"data_type": "double"},
-        "may": {"data_type": "double"},
-        "jun": {"data_type": "double"},
-        "jul": {"data_type": "double"},
-        "aug": {"data_type": "double"},
-        "sep": {"data_type": "double"},
-        "oct": {"data_type": "double"},
-        "nov": {"data_type": "double"},
-        "dec": {"data_type": "double"},
+        "fields__jan": {"data_type": "double"},
+        "fields__feb": {"data_type": "double"},
+        "fields__mar": {"data_type": "double"},
+        "fields__apr": {"data_type": "double"},
+        "fields__may": {"data_type": "double"},
+        "fields__jun": {"data_type": "double"},
+        "fields__jul": {"data_type": "double"},
+        "fields__aug": {"data_type": "double"},
+        "fields__sep": {"data_type": "double"},
+        "fields__oct": {"data_type": "double"},
+        "fields__nov": {"data_type": "double"},
+        "fields__dec": {"data_type": "double"},
     })
     
     load_info = pipeline.run(source)
