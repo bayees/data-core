@@ -131,6 +131,8 @@ def run_source() -> None:
         "fields__oct": {"data_type": "double"},
         "fields__nov": {"data_type": "double"},
         "fields__dec": {"data_type": "double"},
+        "fields__total": {"data_type": "double"},
+        "fields__created_at": {"data_type": "double"},
     })
     
     load_info = pipeline.run(source)
