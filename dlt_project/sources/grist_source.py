@@ -133,7 +133,7 @@ def run_source() -> None:
         "dec": {"data_type": "double"},
     })
     
-    load_info = pipeline.run(grist_source())
+    load_info = pipeline.run(source)
 
     # pretty print the information on data that was loaded
     print(load_info)  # noqa: T201
