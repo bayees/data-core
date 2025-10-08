@@ -24,10 +24,11 @@ prepared_postings as (
         amount,
         currency,
         comment,
-        counter_account_name
+        counter_account_name,
+        'original' as transaction_type
     from postings
 
-        union all
+    union all
 
     -- Eliminations
     select 
@@ -39,17 +40,17 @@ prepared_postings as (
         currency,
         comment,
         counter_account_name,
+        'elimination' as transaction_type
     from postings
     where counter_account_name is not null
         and category_name = 'Kontooverførsel'
         and ( 
-            ( account_name = 'Lønkonto' and counter_account_name = 'C&V Budget')
-            or ( account_name = 'C&V Budget' and counter_account_name = 'Lønkonto' )
+             ( account_name = 'Lønkonto' and counter_account_name = 'C&V Budget')
+           or ( account_name = 'C&V Budget' and counter_account_name = 'Lønkonto' )
         )
-
 )
 
 select 
-    {{ dbt_utils.generate_surrogate_key(['category_name']) }},
+    {{ dbt_utils.generate_surrogate_key(['category_name']) }} as category_id,
     * exclude (category_name)
 from prepared_postings
