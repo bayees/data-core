@@ -33,7 +33,7 @@ prepared_postings as (
     -- Eliminations
     select 
         date::date                                                 as calendar_posting_id,
-        'Anden indkomst'                                           as category_name,
+        category_name                                              as category_name,
         account_name,
         description,
         -amount,
@@ -44,13 +44,29 @@ prepared_postings as (
     from postings
     where counter_account_name is not null
         and category_name = 'Kontooverførsel'
-        and ( 
-             ( account_name = 'Lønkonto' and counter_account_name = 'C&V Budget')
-           or ( account_name = 'C&V Budget' and counter_account_name = 'Lønkonto' )
-        )
+        and account_name = 'C&V Budget' 
+        and counter_account_name = 'Lønkonto'
+
+    union all
+
+        select 
+        date::date                                                 as calendar_posting_id,
+        'Anden indkomst'                                           as category_name,
+        account_name,
+        description,
+        amount,
+        currency,
+        comment,
+        counter_account_name,
+        'elimination' as transaction_type
+    from postings
+    where counter_account_name is not null
+        and category_name = 'Kontooverførsel'
+        and account_name = 'C&V Budget' 
+        and counter_account_name = 'Lønkonto'
 )
 
 select 
     {{ dbt_utils.generate_surrogate_key(['category_name']) }} as category_id,
-    * exclude (category_name)
+    *
 from prepared_postings
