@@ -114,7 +114,28 @@ def run_source() -> None:
     )
 
     # run the pipeline with your parameters
-    load_info = pipeline.run(grist_source())
+    
+    source = grist_source()
+    
+    # Apply hints to the 'statements' resource here
+    source.resources["all"].apply_hints(columns={
+        "fields__jan": {"data_type": "double"},
+        "fields__feb": {"data_type": "double"},
+        "fields__mar": {"data_type": "double"},
+        "fields__apr": {"data_type": "double"},
+        "fields__may": {"data_type": "double"},
+        "fields__jun": {"data_type": "double"},
+        "fields__jul": {"data_type": "double"},
+        "fields__aug": {"data_type": "double"},
+        "fields__sep": {"data_type": "double"},
+        "fields__oct": {"data_type": "double"},
+        "fields__nov": {"data_type": "double"},
+        "fields__dec": {"data_type": "double"},
+        "fields__total": {"data_type": "double"},
+        "fields__created_at": {"data_type": "double"},
+    })
+    
+    load_info = pipeline.run(source)
 
     # pretty print the information on data that was loaded
     print(load_info)  # noqa: T201
