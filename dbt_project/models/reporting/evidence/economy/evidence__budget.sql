@@ -1,8 +1,3 @@
-{{ 
-	config(materialized='external', 
-	location='s3://' ~ env_var('ENVIRONMENT', '') ~ '/reporting/evidence/budget.parquet') 
-}}
-
 select
  	-- dimensions
 	budget.transaction_type AS category_type,

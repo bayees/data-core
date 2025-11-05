@@ -1,8 +1,3 @@
-{{ 
-	config(materialized='external', 
-	location='s3://' ~ env_var('ENVIRONMENT', '') ~ '/reporting/evidence/positions.parquet') 
-}}
-
 select
 	location.latitude_degrees as latitude,
 	location.longitude_degrees as longitude,

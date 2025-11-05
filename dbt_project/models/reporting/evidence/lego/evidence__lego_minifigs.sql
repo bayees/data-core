@@ -1,8 +1,3 @@
-{{ 
-	config(materialized='external', 
-	location='s3://' ~ env_var('ENVIRONMENT', '') ~ '/reporting/evidence/lego_minifigs.parquet') 
-}}
-
 select
     set.* exclude (lego_set_id),
     part.* exclude (lego_minifig_id),

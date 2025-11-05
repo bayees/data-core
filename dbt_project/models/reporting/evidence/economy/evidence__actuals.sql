@@ -1,8 +1,3 @@
-{{ 
-	config(materialized='external', 
-	location='s3://' ~ env_var('ENVIRONMENT', '') ~ '/reporting/evidence/actuals.parquet') 
-}}
-
 with 
 
 actuals_with_corrections as (
